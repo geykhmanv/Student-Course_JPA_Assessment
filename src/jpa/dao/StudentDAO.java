@@ -7,11 +7,11 @@ import jpa.entitymodels.Student;
 
 public interface StudentDAO {
 	
-	public int registerStudentToCourse(Student student);
-	public Student getStudentByEmail(String sEmail);
 	public List<Student> getAllStudents();
-	public boolean validateStudent(String sPass);
-	public List<Course> getStudentCourses();
+	public Student getStudentByEmail(String sEmail);
+	public boolean validateStudent(String sEmail, String sPass);
+	public void registerStudentToCourse(String sEmail, int cid);
+	public List<Course> getStudentCourses(String sEmail);
 	
 	
 }//public interface StudentDAO 

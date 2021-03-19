@@ -9,16 +9,6 @@ import jpa.entitymodels.Student;
 public class StudentService extends AbstractDAO implements StudentDAO {
 
 	@Override
-	public int registerStudentToCourse(Student student) {
-		return 0;
-	}//public int registerStudentToCourse(Student student)
-
-	@Override
-	public Student getStudentByEmail(String sEmail) {
-		return null;
-	}
-
-	@Override
 	public List<Student> getAllStudents() {
 		List<Student> students = null;
 		connectToDB();
@@ -35,14 +25,42 @@ public class StudentService extends AbstractDAO implements StudentDAO {
 	}//public List<Student> getAllStudents()
 
 	@Override
-	public boolean validateStudent(String sPass) {
-		return false;
-	}
+	public Student getStudentByEmail(String sEmail) {
+		connectToDB();
+		
+		Student foundStudent = null;
+		try {
+			em.getTransaction().begin();
+			foundStudent = em.find(Student.class, sEmail);
+			em.getTransaction().commit();
+		}catch(Exception e) {
+			
+		}finally {
+			dispose();
+		}
+		
+		return foundStudent;
+	}//public Student getStudentByEmail(String sEmail)
 
 	@Override
-	public List<Course> getStudentCourses() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public boolean validateStudent(String sEmail, String sPass) {
+		
+		return false;
+	}//public boolean validateStudent(String sEmail, String sPass)
 
+	@Override
+	public void registerStudentToCourse(String sEmail, int cid) {
+		
+		
+	}//public void registerStudentToCourse(String sEmail, int cid) 
+
+	@Override
+	public List<Course> getStudentCourses(String sEmail) {
+		
+		return null;
+	}//public List<Course> getStudentCourses(String sEmail)
+
+	
+
+	
 }//public class StudentService
