@@ -12,9 +12,12 @@ public class SMSRunner {
 	static Scanner scan = new Scanner(System.in);
 	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		
 		System.out.println("Welcome \n");
+		
+		
+		
 		System.out.println("Please enter an integer option: ");
 		int operation = scan.nextInt();
 		scan.nextLine();
@@ -30,10 +33,9 @@ public class SMSRunner {
 				validateStudent();
 				break;
 			case 4:
-				
+				registerStudentToCourse();
 				break;
 			case 5:
-				
 				break;
 			case 6:
 				//exit
@@ -41,9 +43,20 @@ public class SMSRunner {
 			default:
 				break;
 		}//switch
-		
-
+	
+	
 	}//public static void main(String[] args) 
+
+	private static void registerStudentToCourse() throws Exception {
+		System.out.println("Please enter student email: ");
+		String sEmail = scan.nextLine();
+		System.out.println("Please enter course ID for which you'd like to register: ");
+		int cid = scan.nextInt();
+		scan.nextLine();
+		
+		studentService.registerStudentToCourse(sEmail, cid);
+		
+	}//private static void registerStudentToCourse() 
 
 	private static void validateStudent() {
 		System.out.println("Please enter your email: ");
@@ -52,10 +65,12 @@ public class SMSRunner {
 		String sPass = scan.nextLine();
 		
 		boolean isStudentValid = studentService.validateStudent(sEmail, sPass);
-		if(isStudentValid)
+		if(isStudentValid) {
 			System.out.println("Student Valid");
-		else 
+		}else {
 			System.out.println("Student Not Valid");
+		}
+		
 	}//private static void validateStudent()
 
 	private static void getStudentByEmail() {

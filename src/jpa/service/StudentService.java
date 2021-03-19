@@ -5,6 +5,7 @@ import jpa.dao.AbstractDAO;
 import jpa.dao.StudentDAO;
 import jpa.entitymodels.Course;
 import jpa.entitymodels.Student;
+import jpa.entitymodels.Student_Course;
 
 public class StudentService extends AbstractDAO implements StudentDAO {
 
@@ -71,7 +72,18 @@ public class StudentService extends AbstractDAO implements StudentDAO {
 		connectToDB();
 		
 		try {
+			List<Student_Course> studentEmails = em.createQuery("SELECT sc"
+							+ " FROM Student_Course sc"
+							+ " WHERE sc.Student_SEMAIL = :email AND sc.sCourses_CID = :courseId", Student_Course.class)
+			.setParameter("email", sEmail)
+			.setParameter("courseId", cid)
+			.getResultList();
 			
+			if(studentEmails.isEmpty()) {
+				System.out.println("Student is not registered for a course");
+			}else {
+				System.out.println("Student is registered for a course");
+			}
 			
 			
 		}catch(Exception e) {
@@ -80,6 +92,7 @@ public class StudentService extends AbstractDAO implements StudentDAO {
 		}finally {
 			dispose();
 		}
+		
 		
 	}//public void registerStudentToCourse(String sEmail, int cid) 
 
