@@ -13,14 +13,16 @@ public class StudentService extends AbstractDAO implements StudentDAO {
 		List<Student> students = null;
 		connectToDB();
 		try {
-			em.getTransaction().begin();
+//			em.getTransaction().begin();
 			students = em.createQuery("SELECT s FROM Student s", Student.class).getResultList();
-			em.getTransaction().commit();
+//			em.getTransaction().commit();
 		}catch(Exception e) {
 			students = null;
 			e.printStackTrace();
+		}finally{
+			dispose();
 		}
-		dispose();
+		
 		return students;
 	}//public List<Student> getAllStudents()
 
@@ -30,11 +32,11 @@ public class StudentService extends AbstractDAO implements StudentDAO {
 		
 		Student foundStudent = null;
 		try {
-			em.getTransaction().begin();
+//			em.getTransaction().begin();
 			foundStudent = em.find(Student.class, sEmail);
-			em.getTransaction().commit();
+//			em.getTransaction().commit();
 		}catch(Exception e) {
-			
+			e.printStackTrace();
 		}finally {
 			dispose();
 		}
@@ -45,12 +47,39 @@ public class StudentService extends AbstractDAO implements StudentDAO {
 	@Override
 	public boolean validateStudent(String sEmail, String sPass) {
 		
+		connectToDB();
+		
+		try {
+			Student foundStudent = em.find(Student.class, sEmail);
+			if(foundStudent == null) return false;
+			
+			//If I'm here the student is found. Now check the password
+			if(foundStudent.getsPass().equals(sPass)) return true;
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dispose();
+		}
+		
 		return false;
 	}//public boolean validateStudent(String sEmail, String sPass)
 
 	@Override
-	public void registerStudentToCourse(String sEmail, int cid) {
+	public void registerStudentToCourse(String sEmail, int cid) throws Exception {
 		
+		connectToDB();
+		
+		try {
+			
+			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			dispose();
+		}
 		
 	}//public void registerStudentToCourse(String sEmail, int cid) 
 

@@ -27,7 +27,7 @@ public class SMSRunner {
 				getStudentByEmail();
 				break;
 			case 3:
-				
+				validateStudent();
 				break;
 			case 4:
 				
@@ -44,6 +44,19 @@ public class SMSRunner {
 		
 
 	}//public static void main(String[] args) 
+
+	private static void validateStudent() {
+		System.out.println("Please enter your email: ");
+		String sEmail = scan.nextLine();
+		System.out.println("Please enter your password: ");
+		String sPass = scan.nextLine();
+		
+		boolean isStudentValid = studentService.validateStudent(sEmail, sPass);
+		if(isStudentValid)
+			System.out.println("Student Valid");
+		else 
+			System.out.println("Student Not Valid");
+	}//private static void validateStudent()
 
 	private static void getStudentByEmail() {
 		System.out.println("Please enter the student's email: ");
