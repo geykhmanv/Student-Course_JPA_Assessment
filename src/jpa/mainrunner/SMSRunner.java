@@ -14,10 +14,23 @@ public class SMSRunner {
 	
 	public static void main(String[] args) throws Exception {
 		
+		//student credentials validation
 		System.out.println("Welcome \n");
+		System.out.println("Please enter your email: ");
+		String sEmail = scan.nextLine();
+		System.out.println("Please enter your password: ");
+		String sPass = scan.nextLine();
+		
+		boolean isStudentValid = studentService.validateStudent(sEmail, sPass);
+		if(isStudentValid) {
+			System.out.println("Student Valid /n");
+			showMenu();
+		}else System.out.println("Student Not Valid");
 		
 		
-		
+	}//public static void main(String[] args) 
+
+	private static void showMenu() throws Exception {
 		System.out.println("Please enter an integer option: ");
 		int operation = scan.nextInt();
 		scan.nextLine();
@@ -30,22 +43,15 @@ public class SMSRunner {
 				getStudentByEmail();
 				break;
 			case 3:
-				validateStudent();
-				break;
-			case 4:
 				registerStudentToCourse();
 				break;
-			case 5:
-				break;
-			case 6:
-				//exit
+			case 4:
 				break;
 			default:
 				break;
 		}//switch
-	
-	
-	}//public static void main(String[] args) 
+		
+	}//private static void showMenu() 
 
 	private static void registerStudentToCourse() throws Exception {
 		System.out.println("Please enter student email: ");
@@ -57,21 +63,6 @@ public class SMSRunner {
 		studentService.registerStudentToCourse(sEmail, cid);
 		
 	}//private static void registerStudentToCourse() 
-
-	private static void validateStudent() {
-		System.out.println("Please enter your email: ");
-		String sEmail = scan.nextLine();
-		System.out.println("Please enter your password: ");
-		String sPass = scan.nextLine();
-		
-		boolean isStudentValid = studentService.validateStudent(sEmail, sPass);
-		if(isStudentValid) {
-			System.out.println("Student Valid");
-		}else {
-			System.out.println("Student Not Valid");
-		}
-		
-	}//private static void validateStudent()
 
 	private static void getStudentByEmail() {
 		System.out.println("Please enter the student's email: ");
