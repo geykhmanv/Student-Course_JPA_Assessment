@@ -92,10 +92,15 @@ public class SMSRunner {
 		List<Course> courseList = courseService.getAllCourses();
 		System.out.println("All of the Courses: \n");
 		if(!courseList.isEmpty()) {
+			System.out.printf("%-10s %-20s %-20s%n", "COURSE ID", "COURSE INSTRUCTOR", "COURSE NAME");
 			for(Course course : courseList) {
-				System.out.println(course + "\n");
+				System.out.format("%-10d %-20s %-20s%n%n", course.getCid(), course.getcName(), course.getcInstructorName() );
+				System.out.println("");
 			}
-		}else System.out.println("No Courses");
+		}else {
+			System.out.println("No Courses \n");
+			System.out.println("");
+		}
 		
 		
 	}//private static void getAllCourses()
@@ -116,7 +121,8 @@ public class SMSRunner {
 		String sEmail = scan.nextLine();
 		Student student = studentService.getStudentByEmail(sEmail);
 		if(student != null) {
-			System.out.println(student);
+			System.out.printf("%-50s %-20s%n", "STUDENT EMAIL", "STUDENT NAME");
+			System.out.format("%-50s %-20s%n", student.getsEmail(), student.getsName());
 		}else {
 			System.out.println("Student Not found");
 		}
@@ -127,8 +133,9 @@ public class SMSRunner {
 		List<Student> studentList = studentService.getAllStudents();
 		System.out.println("All of the Students: \n");
 		if(!studentList.isEmpty()) {
+			System.out.printf("%-50s %-20s%n", "STUDENT EMAIL", "STUDENT NAME");
 			for(Student student : studentList) {
-				System.out.println(student + "\n");
+				System.out.format("%-50s %-20s%n", student.getsEmail(), student.getsName());
 			}
 		}else System.out.println("No Students");
 		
