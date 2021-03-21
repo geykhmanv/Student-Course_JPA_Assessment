@@ -107,7 +107,9 @@ public class StudentService extends AbstractDAO implements StudentDAO {
 		List<Course> courseList = null;
 		try {
 			Student foundStudent = em.find(Student.class, sEmail);
-			courseList = foundStudent.getsCourses();
+			if(foundStudent != null) courseList = foundStudent.getsCourses();
+			else System.out.println("Student not found");
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {

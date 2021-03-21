@@ -5,11 +5,13 @@ import java.util.Scanner;
 
 import jpa.entitymodels.Course;
 import jpa.entitymodels.Student;
+import jpa.service.CourseService;
 import jpa.service.StudentService;
 
 public class SMSRunner {
 
 	static StudentService studentService = new StudentService();
+	static CourseService courseService = new CourseService();
 	static Scanner scan = new Scanner(System.in);
 	
 	
@@ -17,22 +19,49 @@ public class SMSRunner {
 		
 		//student credentials validation
 		System.out.println("Welcome \n");
-		System.out.println("Please enter your email: ");
-		String sEmail = scan.nextLine();
-		System.out.println("Please enter your password: ");
-		String sPass = scan.nextLine();
-		
-		boolean isStudentValid = studentService.validateStudent(sEmail, sPass);
-		if(isStudentValid) {
-			System.out.println("Student Valid \n");
-			showMenu();
-		}else System.out.println("Student Not Valid");
-		
+		System.out.println("Are you a: \n 1. Student \n 2. Quit");
+		int choice = scan.nextInt();
+		scan.nextLine();
+		if(choice == 1) {
+			//student validation
+			System.out.println("Please enter your email: ");
+			String sEmail = scan.nextLine();
+			System.out.println("Please enter your password: ");
+			String sPass = scan.nextLine();
+			
+			boolean isStudentValid = studentService.validateStudent(sEmail, sPass);
+			if(isStudentValid) {
+				System.out.println("Student Valid \n");
+				System.out.println("My Classes: ");
+				
+				//get the student's courses
+				List<Course> courseList = studentService.getStudentCourses(sEmail);
+				if(!courseList.isEmpty()) {
+					System.out.printf("%-10s %-20s %-20s%n", "COURSE ID", "COURSE INSTRUCTOR", "COURSE NAME");
+					for(Course course : courseList) {
+						System.out.format("%-10d %-20s %-20s%n", course.getCid(), course.getcName(), course.getcInstructorName() );
+					}
+				}else System.out.println("You have no courses");
+				
+				showMenu();
+				
+			}else System.out.println("Student Not Valid");
+			
+			
+		}else {
+			System.out.println("Goodbye");
+			System.exit(0);
+		}
 		
 	}//public static void main(String[] args) 
 
 	private static void showMenu() throws Exception {
-		System.out.println("Please enter an integer option: ");
+		System.out.println("Please choose an option: ");
+		System.out.println("1. Get All Students");
+		System.out.println("2. Get A Student By Email");
+		System.out.println("3. Register for a Course");
+		System.out.println("4. Get All Courses");
+		System.out.println("5. Log Out");
 		int operation = scan.nextInt();
 		scan.nextLine();
 		
@@ -47,7 +76,11 @@ public class SMSRunner {
 				registerStudentToCourse();
 				break;
 			case 4:
-				getStudentCourses();
+				getAllCourses();
+				break;
+			case 5:
+				System.out.println("Logging Out...");
+				System.exit(0);
 				break;
 			default:
 				break;
@@ -55,19 +88,17 @@ public class SMSRunner {
 		
 	}//private static void showMenu() 
 
-	private static void getStudentCourses() {
-		System.out.println("Please enter the student's email: ");
-		String sEmail = scan.nextLine();
-		List<Course> courseList = studentService.getStudentCourses(sEmail);
+	private static void getAllCourses() {
+		List<Course> courseList = courseService.getAllCourses();
+		System.out.println("All of the Courses: \n");
 		if(!courseList.isEmpty()) {
-			System.out.println("Your Current Courses: ");
 			for(Course course : courseList) {
 				System.out.println(course + "\n");
 			}
-		}else System.out.println("You have no courses");
+		}else System.out.println("No Courses");
 		
 		
-	}//private static void getStudentCourses() 
+	}//private static void getAllCourses()
 
 	private static void registerStudentToCourse() throws Exception {
 		System.out.println("Please enter student email: ");
@@ -99,7 +130,7 @@ public class SMSRunner {
 			for(Student student : studentList) {
 				System.out.println(student + "\n");
 			}
-		}else {System.out.println("No Students");}
+		}else System.out.println("No Students");
 		
 	}//private static void getAllStudents()
 
