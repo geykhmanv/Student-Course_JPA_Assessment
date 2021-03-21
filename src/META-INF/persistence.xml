@@ -3,7 +3,7 @@
 	<persistence-unit name="SMS">
 		<class>jpa.entitymodels.Course</class>
 		<class>jpa.entitymodels.Student</class>
-		<class>jpa.entitymodels.Student_Course</class>
+		
 		
 
 		<properties>

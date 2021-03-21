@@ -23,7 +23,7 @@ public class SMSRunner {
 		
 		boolean isStudentValid = studentService.validateStudent(sEmail, sPass);
 		if(isStudentValid) {
-			System.out.println("Student Valid /n");
+			System.out.println("Student Valid \n");
 			showMenu();
 		}else System.out.println("Student Not Valid");
 		

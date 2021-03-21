@@ -1,11 +1,10 @@
 package jpa.service;
 import java.util.List;
-
 import jpa.dao.AbstractDAO;
 import jpa.dao.StudentDAO;
 import jpa.entitymodels.Course;
 import jpa.entitymodels.Student;
-import jpa.entitymodels.Student_Course;
+
 
 public class StudentService extends AbstractDAO implements StudentDAO {
 
@@ -14,9 +13,7 @@ public class StudentService extends AbstractDAO implements StudentDAO {
 		List<Student> students = null;
 		connectToDB();
 		try {
-//			em.getTransaction().begin();
 			students = em.createQuery("SELECT s FROM Student s", Student.class).getResultList();
-//			em.getTransaction().commit();
 		}catch(Exception e) {
 			students = null;
 			e.printStackTrace();
@@ -33,9 +30,7 @@ public class StudentService extends AbstractDAO implements StudentDAO {
 		
 		Student foundStudent = null;
 		try {
-//			em.getTransaction().begin();
 			foundStudent = em.find(Student.class, sEmail);
-//			em.getTransaction().commit();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -72,27 +67,37 @@ public class StudentService extends AbstractDAO implements StudentDAO {
 		connectToDB();
 		
 		try {
-			List<Student_Course> studentEmails = em.createQuery("SELECT sc"
-							+ " FROM Student_Course sc"
-							+ " WHERE sc.Student_SEMAIL = :email AND sc.sCourses_CID = :courseId", Student_Course.class)
-			.setParameter("email", sEmail)
-			.setParameter("courseId", cid)
+			List studentEmails = em.createNativeQuery("SELECT Student_SEMAIL"
+					+ " FROM student_course sc"
+					+ " WHERE sc.Student_SEMAIL = ? AND sc.sCourses_CID = ?")
+			.setParameter(1, sEmail)
+			.setParameter(2, cid)
 			.getResultList();
 			
 			if(studentEmails.isEmpty()) {
-				System.out.println("Student is not registered for a course");
-			}else {
-				System.out.println("Student is registered for a course");
-			}
-			
-			
+				System.out.println("Student is not registered for Course #" + cid);
+				System.out.println("Registering " + sEmail + " for Course #" + cid + "...");
+				
+				//register student for new course
+				em.getTransaction().begin();
+				int newRegister = em.createNativeQuery("INSERT INTO student_course VALUES (?, ?)")
+						.setParameter(1, sEmail)
+						.setParameter(2, cid)
+						.executeUpdate();
+				em.getTransaction().commit();
+				
+				if(newRegister == 1) {
+					System.out.println("Student is now registered for Course #" + cid);
+				}else System.out.println("Error");
+				
+			}else System.out.println("Student is already registered for Course #" + cid);
+				
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw e;
 		}finally {
 			dispose();
 		}
-		
 		
 	}//public void registerStudentToCourse(String sEmail, int cid) 
 
