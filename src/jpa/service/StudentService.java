@@ -15,7 +15,6 @@ public class StudentService extends AbstractDAO implements StudentDAO {
 		try {
 			students = em.createQuery("SELECT s FROM Student s", Student.class).getResultList();
 		}catch(Exception e) {
-			students = null;
 			e.printStackTrace();
 		}finally{
 			dispose();
@@ -103,8 +102,19 @@ public class StudentService extends AbstractDAO implements StudentDAO {
 
 	@Override
 	public List<Course> getStudentCourses(String sEmail) {
+		connectToDB();
 		
-		return null;
+		List<Course> courseList = null;
+		try {
+			Student foundStudent = em.find(Student.class, sEmail);
+			courseList = foundStudent.getsCourses();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dispose();
+		}
+		
+		return courseList;
 	}//public List<Course> getStudentCourses(String sEmail)
 
 	

@@ -3,6 +3,7 @@ package jpa.mainrunner;
 import java.util.List;
 import java.util.Scanner;
 
+import jpa.entitymodels.Course;
 import jpa.entitymodels.Student;
 import jpa.service.StudentService;
 
@@ -46,12 +47,27 @@ public class SMSRunner {
 				registerStudentToCourse();
 				break;
 			case 4:
+				getStudentCourses();
 				break;
 			default:
 				break;
 		}//switch
 		
 	}//private static void showMenu() 
+
+	private static void getStudentCourses() {
+		System.out.println("Please enter the student's email: ");
+		String sEmail = scan.nextLine();
+		List<Course> courseList = studentService.getStudentCourses(sEmail);
+		if(!courseList.isEmpty()) {
+			System.out.println("Your Current Courses: ");
+			for(Course course : courseList) {
+				System.out.println(course + "\n");
+			}
+		}else System.out.println("You have no courses");
+		
+		
+	}//private static void getStudentCourses() 
 
 	private static void registerStudentToCourse() throws Exception {
 		System.out.println("Please enter student email: ");
@@ -79,7 +95,7 @@ public class SMSRunner {
 	private static void getAllStudents() {
 		List<Student> studentList = studentService.getAllStudents();
 		System.out.println("All of the Students: \n");
-		if(studentList != null) {
+		if(!studentList.isEmpty()) {
 			for(Student student : studentList) {
 				System.out.println(student + "\n");
 			}
